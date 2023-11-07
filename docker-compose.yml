@@ -1,6 +1,32 @@
-web:
-  build: ./web
-  ports:
-   - "5000:5000"
-  volumes:
-   - .:/code
+version: '3'
+services:
+  prometheus:
+    build: 
+      context: ./prometheus
+    container_name: prometheus
+    networks:
+      - prom_networks
+    ports:
+      - 9090:9090
+    depends_on:
+      - flask_app
+      - node_exporter
+  node_exporter:
+    build: 
+      context: ./node_exporter
+    container_name: node_exporter
+    networks:
+      - prom_networks
+    ports:
+      - 9100:9100
+  flask_app:
+    build: 
+      context: ./python-server
+    container_name: flask_app
+    networks:
+      - prom_networks
+    ports:
+      - 5005:5005
+
+networks:
+  prom_networks:
