@@ -11,6 +11,7 @@ services:
     depends_on:
       - flask_app
       - node_exporter
+  
   node_exporter:
     build: 
       context: ./node_exporter
@@ -19,6 +20,7 @@ services:
       - prom_networks
     ports:
       - 9100:9100
+
   flask_app:
     build: 
       context: ./python-server
